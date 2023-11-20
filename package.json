@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/max-si-m/ngrams-generator/issues"
   },
-  "homepage": "https://github.com/max-si-m/ngrams-generator#readme"
+  "homepage": "https://github.com/max-si-m/ngrams-generator#readme",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
 }
