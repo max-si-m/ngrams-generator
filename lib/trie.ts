@@ -1,5 +1,5 @@
 type TreeNode = {
-  val: string;
+  val?: string;
   parent?: TreeNode; // head
   children: TreeNode[];
   freq: number;
@@ -10,7 +10,7 @@ class Trie {
   root: TreeNode
 
   constructor() {
-    this.root = {val: '', children: [], freq: 0, isWord: false }
+    this.root = {val: undefined, children: [], freq: 0, isWord: false }
     this.populateRoot()
   }
 
