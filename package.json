@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/max-si-m/ngrams-generator#readme",
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   }
 }
