@@ -42,6 +42,7 @@ class Trie {
   }
 
   findChildrenNode(node: TreeNode, letter: string): TreeNode | undefined {
+    // TODO: check performace if use Array(26) and get node directly by index
     return node.children.find(n => n.val === letter);
   }
 
@@ -85,10 +86,3 @@ class Trie {
     }
   }
 }
-
-
-let trie = new Trie()
-trie.addWord('cat')
-trie.addWord('catok')
-trie.addWord('call')
-trie.printTree()
