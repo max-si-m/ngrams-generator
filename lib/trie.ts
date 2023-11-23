@@ -46,6 +46,46 @@ class Trie {
     return node.children.find(n => n.val === letter);
   }
 
+  // Remove word from the trie
+  // c - a - t* - s*
+  //       - r*
+  removeWord(word: string): void {
+    let root = this.root
+    let childrenNode = null
+
+    // find isWord node
+    for (let idx = 0; idx < word.length; idx++) {
+      let letter = word[idx]
+
+      childrenNode = this.findChildrenNode(root, letter)
+      let lastIndex: boolean = word.length - 1 == idx
+
+      if (!childrenNode || childrenNode.isWord !== lastIndex) {
+        // we do not have such node
+        return
+      }
+
+      root = childrenNode
+    }
+
+    // if we have children we can not remove node
+    // if (childrenNode?.children.length) // TODO
+  }
+
+  search(word: string): boolean {
+    let node = this.root;
+
+    for (let i = 0; i < word.length; i++) {
+      let childrenNode = this.findChildrenNode(node, word[i])
+      if (!childrenNode)
+        return false
+
+      node = childrenNode
+    }
+
+    return node?.isWord
+  }
+
   updateFreq(node: TreeNode): void {
     node.freq += 1
 
@@ -86,3 +126,10 @@ class Trie {
     }
   }
 }
+
+// let trie = new Trie()
+// trie.addWord('cat')
+// trie.addWord('cats')
+// trie.addWord('car')
+// console.log(trie.search('cat'))
+// console.log(trie.search('caz'))
