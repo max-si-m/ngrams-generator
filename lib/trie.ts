@@ -36,9 +36,10 @@ class Trie {
         root.children.push(childrenNode)
       }
 
-      this.updateFreq(childrenNode)
       root = childrenNode
     }
+
+    this.updateFreq(root)
   }
 
   findChildrenNode(node: TreeNode, letter: string): TreeNode | undefined {
