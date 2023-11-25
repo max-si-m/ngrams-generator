@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
     "test": "node index.js"
   },
   "repository": {
@@ -19,5 +20,8 @@
   "devDependencies": {
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "commander": "^11.1.0"
   }
 }
