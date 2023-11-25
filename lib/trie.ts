@@ -10,7 +10,7 @@ class Trie {
   root: TreeNode
 
   constructor() {
-    this.root = {val: undefined, children: [], freq: 0, isWord: false }
+    this.root = { val: undefined, children: [], freq: 0, isWord: false }
     this.populateRoot()
   }
 
@@ -21,7 +21,7 @@ class Trie {
     for (let idx = 0; idx < word.length; idx++) {
       let letter = word[idx]
 
-      childrenNode = this.findChildrenNode(root, letter)
+      childrenNode = this.findChildrenNode(root,  letter)
       let lastIndex = word.length - 1 == idx
       if (childrenNode) {
         lastIndex ? childrenNode.isWord = true : false
@@ -50,19 +50,15 @@ class Trie {
   // Remove word from the trie
   // c - a - t* - s*
   //       - r*
-  removeWord(word: string): void {
+  remove(word: string): void {
     let root = this.root
     let childrenNode = null
 
-    // find isWord node
     for (let idx = 0; idx < word.length; idx++) {
       let letter = word[idx]
 
       childrenNode = this.findChildrenNode(root, letter)
-      let lastIndex: boolean = word.length - 1 == idx
-
-      if (!childrenNode || childrenNode.isWord !== lastIndex) {
-        // we do not have such node
+      if (!childrenNode) {
         return
       }
 
@@ -70,7 +66,16 @@ class Trie {
     }
 
     // if we have children we can not remove node
-    // if (childrenNode?.children.length) // TODO
+    let cParent = childrenNode?.parent
+    while (cParent) {
+      if (childrenNode?.children.length === 0 && cParent) { 
+        let idx = cParent.children.indexOf(childrenNode)
+        cParent.children[idx] = cParent.children[cParent.children.length - 1] // set last node instead of children node instead of swapping
+        cParent.children.pop() // pop duplicate letter
+      }
+      childrenNode = cParent
+      cParent = cParent.parent 
+    }
   }
 
   search(word: string): boolean {
