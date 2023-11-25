@@ -132,10 +132,3 @@ class Trie {
     }
   }
 }
-
-// let trie = new Trie()
-// trie.addWord('cat')
-// trie.addWord('cats')
-// trie.addWord('car')
-// console.log(trie.search('cat'))
-// console.log(trie.search('caz'))
