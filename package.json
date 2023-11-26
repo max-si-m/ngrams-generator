@@ -1,7 +1,7 @@
 {
   "name": "ngrams-generator",
   "version": "0.0.1",
-  "description": "",
+  "description": "Generate Ngrams for https://ranelpadon.github.io/ngram-type/ based on text which you already typed.",
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
