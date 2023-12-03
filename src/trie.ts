@@ -6,12 +6,11 @@ type TreeNode = {
   isWord: boolean;
 }
 
-class Trie {
+export default class Trie {
   root: TreeNode
 
   constructor() {
     this.root = { val: undefined, children: [], freq: 0, isWord: false }
-    this.populateRoot()
   }
 
   addWord(word: string) {
@@ -68,13 +67,13 @@ class Trie {
     // if we have children we can not remove node
     let cParent = childrenNode?.parent
     while (cParent) {
-      if (childrenNode?.children.length === 0 && cParent) { 
+      if (childrenNode?.children.length === 0 && cParent) {
         let idx = cParent.children.indexOf(childrenNode)
         cParent.children[idx] = cParent.children[cParent.children.length - 1] // set last node instead of children node instead of swapping
         cParent.children.pop() // pop duplicate letter
       }
       childrenNode = cParent
-      cParent = cParent.parent 
+      cParent = cParent.parent
     }
   }
 
@@ -107,28 +106,13 @@ class Trie {
     }
   }
 
-  printNode(node: TreeNode, level: number): void {
+  private printNode(node: TreeNode, level: number): void {
     if (node) {
       const indent = ' '.repeat(level * 2);
       console.log(`${indent}${node.val}${node.isWord ? '*' : '' }:${node.freq}`);
       for (let child of node.children) {
         this.printNode(child, level + 1); // Recursively print child nodes
       }
-    }
-  }
-
-  populateRoot(): void {
-    let alphabet: any = 'abcdefghijklmnopqrstuvwxyz'
-    for(const l of alphabet) {
-      this.root.children.push(
-        {
-          val: l,
-          parent: this.root,
-          children: [],
-          freq: 0,
-          isWord: false
-        } as TreeNode
-      )
     }
   }
 }
