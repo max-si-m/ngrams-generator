@@ -21,14 +21,11 @@ export default class Trie {
       let letter = word[idx]
 
       childrenNode = this.findChildrenNode(root,  letter)
-      let lastIndex = word.length - 1 == idx
-      if (childrenNode) {
-        lastIndex ? childrenNode.isWord = true : false
-      } else {
+      if (!childrenNode) {
         childrenNode = {
           parent: root,
           val: letter,
-          isWord: lastIndex,
+          isWord: false,
           children: [],
           freq: 0,
         }
@@ -38,6 +35,8 @@ export default class Trie {
       root = childrenNode
     }
 
+    if (childrenNode)
+      childrenNode.isWord = true
     this.updateFreq(root)
   }
 
