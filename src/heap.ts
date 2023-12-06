@@ -10,20 +10,20 @@ export default class MaxHeap {
   insert(val: number) {
     this.data[this.length] = val
     this.heapifyUp(this.length)
-    this.length += 1 
+    this.length += 1
   }
-   
-  delete(): number {
+
+  top(): number {
     if (this.length === 0)
       return -1;
-    
+
     const out = this.data[0]
     this.length -= 1
     if (this.length === 0) {
       this.data = []
       return out;
     }
-    
+
     this.data[0] = this.data[this.length]
     this.data.pop() // we set last leaf as root so we have to remove last node
     this.heapifyDown(0)
@@ -44,7 +44,7 @@ export default class MaxHeap {
       currentIndex += levelWidth;
     }
   }
-  
+
   private heapifyDown(idx: number): void {
     const leftChildIndex = this.leftChild(idx);
     const rightChildIndex = this.rightChild(idx);
@@ -81,14 +81,14 @@ export default class MaxHeap {
 
     if (cVal > pVal) {
       this.swap(pIdx, idx)
-      this.heapifyUp(pIdx) 
+      this.heapifyUp(pIdx)
     }
   }
 
   private parentIdx(idx: number): number {
     return Math.floor((idx - 1) / 2)
   }
-  
+
   private leftChild(idx: number): number {
     return 2*idx + 1;
   }
