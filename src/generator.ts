@@ -9,7 +9,39 @@ const map: Map<number, string[]> = new Map();
 
 async function run(trie: Trie): Promise<void> {
   const _ = await readDirectory('./', readDirectoryCallback)
-  trie.printTree();
+  // trie is populated here
+  //trie.root.children.sort((a, b) => b.freq - a.freq)
+  //trie.printTree()
+
+  const res = {
+    10: ['cat', 'dog'],
+    5: ['res'],
+    3: ['ing', 'tes'],
+    1: ['sor', 'pri', 'con'],
+  }
+
+  for (const [freq, words] of Object.entries(res)) {
+    map.set(Number(freq), words)
+  }
+
+  for (const [freq, _] of map) {
+    heap.insert(freq)
+  }
+
+  heap.drawHeap();
+  //    10
+  //   5  3
+  //  1
+
+  let top = 2
+  while (top > 0) {
+    const freq = heap.top()
+    const words = map.get(freq)
+    top -= 1
+    words?.forEach(word => {
+      console.log(word)
+    })
+  }
 }
 
 run(trie)
