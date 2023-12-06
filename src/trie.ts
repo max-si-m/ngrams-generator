@@ -90,7 +90,7 @@ export default class Trie {
     return node?.isWord
   }
 
-  updateFreq(node: TreeNode): void {
+  private updateFreq(node: TreeNode): void {
     node.freq += 1
 
     if (node.parent)
