@@ -8,10 +8,10 @@ const heap = new MaxHeap();
 const map: Map<number, string[]> = new Map();
 
 async function run(trie: Trie): Promise<void> {
-  const _ = await readDirectory('./', readDirectoryCallback)
+  const _ = await readFile('./README.md', ReadFileCallback)
   // trie is populated here
   //trie.root.children.sort((a, b) => b.freq - a.freq)
-  //trie.printTree()
+  trie.printTree()
 
   const res = {
     10: ['cat', 'dog'],
@@ -73,7 +73,7 @@ function parseLineByWord(line: string): string[] {
 
   for(const letter of line) {
     if (isLetter(letter)) {
-      if (isUpperCaseLetter(letter)) {
+      if (isUpperCaseLetter(letter)) { // when we have camelCase that should count as two words
         saveWord(word)
         word = [letter.toLowerCase()]
       } else {
