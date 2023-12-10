@@ -9,39 +9,41 @@ const map: Map<number, string[]> = new Map();
 
 async function run(trie: Trie): Promise<void> {
   const _ = await readFile('./README.md', ReadFileCallback)
-  // trie is populated here
-  //trie.root.children.sort((a, b) => b.freq - a.freq)
-  trie.printTree()
+  const tmpMap: Map<string, number> = new Map()
 
-  const res = {
-    10: ['cat', 'dog'],
-    5: ['res'],
-    3: ['ing', 'tes'],
-    1: ['sor', 'pri', 'con'],
-  }
+  trie.generateCombinations(2, tmpMap)
 
-  for (const [freq, words] of Object.entries(res)) {
-    map.set(Number(freq), words)
-  }
+  // get this working first, later we can optimize
+  tmpMap.forEach((value: number, key: string) => {
+    if (map.has(value)) {
+      const words = map.get(value)
+      words?.push(key)
+    } else {
+      map.set(value, [key])
+    }
+  })
 
+  // build heap
   for (const [freq, _] of map) {
     heap.insert(freq)
   }
 
-  heap.drawHeap();
+  //heap.drawHeap();
   //    10
   //   5  3
   //  1
 
-  let top = 2
+  let top = 10
   while (top > 0) {
     const freq = heap.top()
     const words = map.get(freq)
-    top -= 1
     words?.forEach(word => {
-      console.log(word)
+      top -= 1
+      process.stdout.write(word)
+      process.stdout.write(', ')
     })
   }
+  process.stdout.write('\n')
 }
 
 run(trie)
@@ -52,7 +54,7 @@ function readDirectoryCallback(dirent: any): void {
   }
 
   if (dirent.isDirectory()) {
-    readDirectory(resolve('./', dirent.name), readDirectoryCallback); // path building should be more complex
+    readDirectory(resolve('./', dirent.name), readDirectoryCallback); // TODO: path building should be more complex it doesn't work for nested directories
   }
 }
 
