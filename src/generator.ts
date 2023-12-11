@@ -2,10 +2,12 @@ import { readDirectory, readFile } from './crawler';
 import MaxHeap from './heap';
 import Trie from './trie';
 import { resolve } from 'node:path'
+import { Output } from './output';
 
 const trie = new Trie();
 const heap = new MaxHeap();
 const map: Map<number, string[]> = new Map();
+const output = new Output(); // TODO: configuration would be passed from args
 
 async function run(trie: Trie): Promise<void> {
   const _ = await readFile('./README.md', ReadFileCallback)
@@ -39,11 +41,9 @@ async function run(trie: Trie): Promise<void> {
     const words = map.get(freq)
     words?.forEach(word => {
       top -= 1
-      process.stdout.write(word)
-      process.stdout.write(', ')
+      output.write(`${word} `)
     })
   }
-  process.stdout.write('\n')
 }
 
 run(trie)
