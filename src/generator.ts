@@ -9,11 +9,29 @@ const heap = new MaxHeap();
 const map: Map<number, string[]> = new Map();
 const output = new Output(); // TODO: configuration would be passed from args
 
+let start
+let stop
+
 async function run(trie: Trie): Promise<void> {
+
+  process.stderr.write("[START] Read files and build trie \n");
+
+  start = performance.now();
   const _ = await readFile('./README.md', ReadFileCallback)
   const tmpMap: Map<string, number> = new Map()
+  stop = performance.now();
 
+  process.stderr.write(`[END] Read files and build trie ${stop - start} ms\n`);
+
+  process.stderr.write('--------------------------------------\n')
+
+  process.stderr.write("[START] Generate combinations \n");
+  start = performance.now();
   trie.generateCombinations(2, tmpMap)
+  stop = performance.now();
+  process.stderr.write(`[END] Generate combinations ${stop - start} ms \n`);
+
+  process.stderr.write('--------------------------------------\n')
 
   // get this working first, later we can optimize
   tmpMap.forEach((value: number, key: string) => {
@@ -25,10 +43,15 @@ async function run(trie: Trie): Promise<void> {
     }
   })
 
-  // build heap
+  process.stderr.write("[START] building Heap \n");
+  start = performance.now();
   for (const [freq, _] of map) {
     heap.insert(freq)
   }
+  stop = performance.now()
+  process.stderr.write(`[END] building Heap ${stop - start} ms\n`);
+
+  process.stderr.write('--------------------------------------\n')
 
   //heap.drawHeap();
   //    10
