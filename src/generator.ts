@@ -8,56 +8,47 @@ const trie = new Trie();
 const heap = new MaxHeap();
 const map: Map<number, string[]> = new Map();
 const output = new Output(); // TODO: configuration would be passed from args
-
+const verbose = true // TODO: should be passed via args
 let start
 let stop
 
 async function run(trie: Trie): Promise<void> {
 
-  process.stderr.write("[START] Read files and build trie \n");
-
+  consoleLogger("Read files and build trie");
   start = performance.now();
   const _ = await readFile('./README.md', ReadFileCallback)
   const tmpMap: Map<string, number> = new Map()
   stop = performance.now();
+  consoleLogger("Read files and build trie finished", true, stop - start);
 
-  process.stderr.write(`[END] Read files and build trie ${stop - start} ms\n`);
-
-  process.stderr.write('--------------------------------------\n')
-
-  process.stderr.write("[START] Generate combinations \n");
+  consoleLogger("Generate combinations");
   start = performance.now();
   trie.generateCombinations(2, tmpMap)
   stop = performance.now();
-  process.stderr.write(`[END] Generate combinations ${stop - start} ms \n`);
-
-  process.stderr.write('--------------------------------------\n')
+  consoleLogger("Generate combinations finished", true, stop - start);
 
   // get this working first, later we can optimize
-  tmpMap.forEach((value: number, key: string) => {
-    if (map.has(value)) {
-      const words = map.get(value)
+  tmpMap.forEach((value: number, key: string) => { if (map.has(value)) { const words = map.get(value)
       words?.push(key)
     } else {
       map.set(value, [key])
     }
   })
 
-  process.stderr.write("[START] building Heap \n");
+  consoleLogger("Building Heap");
   start = performance.now();
   for (const [freq, _] of map) {
     heap.insert(freq)
   }
   stop = performance.now()
-  process.stderr.write(`[END] building Heap ${stop - start} ms\n`);
-
-  process.stderr.write('--------------------------------------\n')
+  consoleLogger("Building Heap finished", true, stop - start);
 
   //heap.drawHeap();
   //    10
   //   5  3
   //  1
 
+  consoleLogger("Retrive results");
   let top = 10
   while (top > 0) {
     const freq = heap.top()
@@ -67,6 +58,7 @@ async function run(trie: Trie): Promise<void> {
       output.write(`${word} `)
     })
   }
+  output.write('\n')
 }
 
 run(trie)
@@ -124,3 +116,26 @@ function isUpperCaseLetter(character: string): boolean {
   return character !== character.toLowerCase()
 }
 
+function consoleLogger(text: string, end: boolean = false, time: undefined|number = undefined): void {
+  if (!verbose) {
+    return
+  }
+
+  if (end) {
+    process.stderr.write('[END] ')
+  } else {
+    process.stderr.write('[START] ')
+  }
+
+  process.stderr.write(text)
+
+  if(time) {
+    process.stderr.write(` ${time} ms`)
+  }
+
+  process.stderr.write('\n')
+
+  if (end) {
+    process.stderr.write('---------------------------------------\n\n')
+  }
+}
