@@ -1,8 +1,8 @@
-import { parseLineByWord, readFile, readDirectory } from './crawler';
 import { resolve } from 'node:path';
 import MaxHeap from './heap';
 import Trie from './trie';
 import Output from './output';
+import Crawler from './crawler';
 
 let start
 let stop
@@ -10,6 +10,7 @@ let stop
 const trie: Trie = new Trie();
 const heap: MaxHeap = new MaxHeap();
 const mapHeap: Map<number, string[]> = new Map();
+const crawler: Crawler = new Crawler();
 
 export class Generator {
   path: string
@@ -28,7 +29,7 @@ export class Generator {
     this.output = output
   }
 
-  run = async (): Promise<void> => {
+  run = async(): Promise<void> => {
     if (this.length < 2) {
       throw new Error('Length must be greater than 1')
     }
@@ -39,7 +40,7 @@ export class Generator {
 
     this.consoleLogger("Read files and build trie");
     start = performance.now();
-    const _ = await readFile(this.path, this.readFileCallback)
+    const _ = await crawler.run(this.path, this.readDirectoryCallback, this.readFileCallback)
 
     const tmpMap: Map<string, number> = new Map()
     stop = performance.now();
@@ -84,17 +85,17 @@ export class Generator {
   }
 
   readFileCallback(line: string): void {
-    let words: string[] = parseLineByWord(line);
+    let words: string[] = crawler.parseLineByWord(line);
     words.forEach(word => { trie.addWord(word) });
   }
 
   readDirectoryCallback(dirent: any): void {
     if (dirent.isFile()) {
-      readFile(resolve('./', dirent.name), this.readFileCallback);
+      crawler.readFile(resolve('./', dirent.name), this.readFileCallback);
     }
 
     if (dirent.isDirectory()) {
-      readDirectory(resolve('./', dirent.name), this.readDirectoryCallback); // TODO: path building should be more complex it doesn't work for nested directories
+      crawler.readDirectory(resolve('./', dirent.name), this.readDirectoryCallback); // TODO: path building should be more complex it doesn't work for nested directories
     }
   }
 
