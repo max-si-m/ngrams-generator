@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import MaxHeap from './heap';
 import Trie from './trie';
 import Output from './output';
@@ -40,17 +39,14 @@ export class Generator {
 
     this.consoleLogger("Read files and build trie");
     start = performance.now();
-    const words = await crawler.run(this.path, this.readFileCallback)
-
-    const tmpMap: Map<string, number> = new Map()
+    await crawler.run(this.path, this.readFileCallback)
     stop = performance.now();
     this.consoleLogger("Read files and build trie finished", true, stop - start);
 
     this.consoleLogger("Generate combinations");
     start = performance.now();
+    const tmpMap: Map<string, number> = new Map()
     trie.generateCombinations(this.length, tmpMap)
-    stop = performance.now();
-    this.consoleLogger("Generate combinations finished", true, stop - start);
 
     // TODO: refactore, somewhere in the future, get this working first, later can optimize
     tmpMap.forEach((value: number, key: string) => {
@@ -61,6 +57,9 @@ export class Generator {
         mapHeap.set(value, [key])
       }
     })
+
+    stop = performance.now();
+    this.consoleLogger("Generate combinations finished", true, stop - start);
 
     this.consoleLogger("Building Heap");
     start = performance.now();

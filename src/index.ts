@@ -16,7 +16,7 @@ program.
   option('-d, --debug', 'Output debug information').
   option('-f, --file <path>', 'Output file path, if not provided output will be written into STDOUT').
   option('-l, --length <number>', 'Length of generated ngrams', '3').
-  option('-t, --top <number>', 'Number of top ngrams that should be generated', '10')
+  option('-t, --top <number>', 'Number of top ngrams that should be generated', '50')
 
 program.parse(process.argv);
 
