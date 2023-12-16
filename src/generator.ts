@@ -68,17 +68,19 @@ export class Generator {
     this.consoleLogger("Building Heap finished", true, stop - start);
 
     this.consoleLogger("Retrive results");
-    let top = 10
-    while (top > 0 && heap.length > 0) {
+    while (this.top > 0 && heap.length > 0) {
       const freq = heap.top()
       const words = mapHeap.get(freq)
       words?.forEach(word => {
-        top -= 1
+        if (this.top === 0) {
+          return
+        }
+
+        this.top -= 1
         this.output.write(`${word} `)
       })
     }
     this.output.write('\n')
-    this.consoleLogger("Retrive results finished", true);
   }
 
   readFileCallback(line: string): void {
