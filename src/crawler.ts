@@ -3,23 +3,23 @@ import { statSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 export default class Crawler {
-  run(path: string, directoryCallback: Function, fileCallback: Function): Promise<void> {
-     if (!path) {
-       throw new Error('Path is required')
-     }
+  run(path: string, readFileCallback: Function): Promise<void> {
+    if (!path) {
+      throw new Error('Path is required')
+    }
 
     if (statSync(path).isDirectory()){
-      return this.readDirectory(path, directoryCallback)
+      return this.readDirectory(path, readFileCallback)
     } else {
-      return this.readFile(path, fileCallback)
+      return this.readFile(path, readFileCallback)
     }
   }
 
-  async readDirectory(name: string, callback: Function) {
+  async readDirectory(directoryPath: string, callback: Function) {
     try {
-      const dir = await opendir(name);
+      const dir = await opendir(directoryPath);
       for await (const dirent of dir){
-        callback(dirent)
+        await this.run(resolve(directoryPath, dirent.name), callback)
       }
     } catch (err) {
       console.error(err);
@@ -79,30 +79,3 @@ export default class Crawler {
   }
 }
 
-// async function test(){
-//   //await readFile('./package.json', (line: string) => {
-//   //  console.log(line)
-//   //  console.log('------')
-//   //});
-//
-//   await readDirectory('./', (dirent: any) => {
-//     console.log(dirent,dirent.isDirectory())
-//     console.log('-----')
-//
-//     // if (dirent.isDirectory()){
-//     //   readDirectory(resolve('./', dirent.name), (dirent: any) => {
-//     //     console.log(dirent,'is directory', dirent.isDirectory())
-//     //     console.log('-----')
-//     //   })
-//     // }
-//
-//     if (dirent.isFile()){
-//       readFile(resolve('./', dirent.name), (line: string) => {
-//         console.log(line)
-//         console.log('read file------')
-//       });
-//     }
-//   })
-// }
-//
-// test()

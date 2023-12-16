@@ -29,7 +29,7 @@ export class Generator {
     this.output = output
   }
 
-  run = async(): Promise<void> => {
+  async run(): Promise<void> {
     if (this.length < 2) {
       throw new Error('Length must be greater than 1')
     }
@@ -40,7 +40,7 @@ export class Generator {
 
     this.consoleLogger("Read files and build trie");
     start = performance.now();
-    const _ = await crawler.run(this.path, this.readDirectoryCallback, this.readFileCallback)
+    const words = await crawler.run(this.path, this.readFileCallback)
 
     const tmpMap: Map<string, number> = new Map()
     stop = performance.now();
@@ -52,10 +52,12 @@ export class Generator {
     stop = performance.now();
     this.consoleLogger("Generate combinations finished", true, stop - start);
 
-    // get this working first, later we can optimize
-    tmpMap.forEach((value: number, key: string) => { if (mapHeap.has(value)) { const words = mapHeap.get(value)
-      words?.push(key)
-    } else {
+    // TODO: refactore, somewhere in the future, get this working first, later can optimize
+    tmpMap.forEach((value: number, key: string) => {
+      if (mapHeap.has(value)) {
+        const words = mapHeap.get(value)
+        words?.push(key)
+      } else {
         mapHeap.set(value, [key])
       }
     })
@@ -86,17 +88,7 @@ export class Generator {
 
   readFileCallback(line: string): void {
     let words: string[] = crawler.parseLineByWord(line);
-    words.forEach(word => { trie.addWord(word) });
-  }
-
-  readDirectoryCallback(dirent: any): void {
-    if (dirent.isFile()) {
-      crawler.readFile(resolve('./', dirent.name), this.readFileCallback);
-    }
-
-    if (dirent.isDirectory()) {
-      crawler.readDirectory(resolve('./', dirent.name), this.readDirectoryCallback); // TODO: path building should be more complex it doesn't work for nested directories
-    }
+    words.forEach(word => { trie.addWord(word) })
   }
 
   consoleLogger(text: string, end: boolean = false, time?: number): void {
