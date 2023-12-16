@@ -25,7 +25,7 @@ class FileStrategy implements OutputStrategy {
   }
 }
 
-export class Output {
+export default class Output {
   private readonly strategy: OutputStrategy;
 
   constructor(filePath?: string) {
@@ -41,6 +41,3 @@ export class Output {
   }
 }
 
-// const output = new Output('test.txt');
-// output.write('Hello world!');
-// output.write("Hello world! \n");
