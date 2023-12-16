@@ -1,32 +1,40 @@
 import { parseLineByWord, readFile, readDirectory } from './crawler';
+import { resolve } from 'node:path';
 import MaxHeap from './heap';
 import Trie from './trie';
-import { Output } from './output';
-import { resolve } from 'node:path'
+import Output from './output';
 
-const trie = new Trie();
-const heap = new MaxHeap();
-const map: Map<number, string[]> = new Map();
-const output = new Output(); // TODO: configuration would be passed from args
 let start
 let stop
 
-export default class Generator {
+const trie: Trie = new Trie();
+const heap: MaxHeap = new MaxHeap();
+const mapHeap: Map<number, string[]> = new Map();
+
+export class Generator {
   path: string
   debug: boolean
-  file: string | undefined
+  file?: string
   length: number
+  top: number
+  private output: Output
 
-  constructor(path: string, length: number, debug: boolean, file?: string) {
+  constructor(path: string, length: number, top: number, debug: boolean, output: Output, file?: string) {
     this.path = path
     this.debug = debug
     this.file = file
     this.length = length
+    this.top = top
+    this.output = output
   }
 
   run = async (): Promise<void> => {
     if (this.length < 2) {
       throw new Error('Length must be greater than 1')
+    }
+
+    if (this.top < 1) {
+      throw new Error('Top must be greater than 0')
     }
 
     this.consoleLogger("Read files and build trie");
@@ -44,16 +52,16 @@ export default class Generator {
     this.consoleLogger("Generate combinations finished", true, stop - start);
 
     // get this working first, later we can optimize
-    tmpMap.forEach((value: number, key: string) => { if (map.has(value)) { const words = map.get(value)
+    tmpMap.forEach((value: number, key: string) => { if (mapHeap.has(value)) { const words = mapHeap.get(value)
       words?.push(key)
     } else {
-        map.set(value, [key])
+        mapHeap.set(value, [key])
       }
     })
 
     this.consoleLogger("Building Heap");
     start = performance.now();
-    for (const [freq, _] of map) {
+    for (const [freq, _] of mapHeap) {
       heap.insert(freq)
     }
     stop = performance.now()
@@ -63,13 +71,14 @@ export default class Generator {
     let top = 10
     while (top > 0 && heap.length > 0) {
       const freq = heap.top()
-      const words = map.get(freq)
+      const words = mapHeap.get(freq)
       words?.forEach(word => {
         top -= 1
-        output.write(`${word} `)
+        this.output.write(`${word} `)
       })
     }
-    output.write('\n')
+    this.output.write('\n')
+    this.consoleLogger("Retrive results finished", true);
   }
 
   readFileCallback(line: string): void {

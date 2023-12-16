@@ -10,13 +10,13 @@ I want to have a cli tool, which accept directory looks every file and builds Ng
 I see as this suppose to work the next way:
 
 ~~~bash
-ngrams-generator path [length] [debug] [file]
+ngrams-generator path [length] [top] [debug] [file]
 ~~~
 
 When I run next command I will receive all ngrams from app/models folder length of 3 saved in the file.
 
 ~~~bash
-ngrams-generator app/models --length 3 -f ngrams_3.txt # or pipe that into something else
+ngrams-generator app/models --length 3 -t 100 -f ngrams_3.txt # or pipe that into something else
 ~~~
 
 ~~~bash
@@ -28,6 +28,7 @@ Options:
   -d, --debug            Output debug information
   -f, --file <path>      Output file path, if not provided output will be written into STDOUT
   -l, --length <number>  Length of generated ngrams (default: "3")
+  -t, --top <number>     Number of top ngrams that should be generated (default: "10")
   -h, --help             display help for command
 ~~~
 
