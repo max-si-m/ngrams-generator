@@ -20,5 +20,5 @@ program.parse(process.argv);
 
 const options = program.opts();
 
-const generator = new Generator(program.args[0], options.length, options.debug, options.file)
+const generator = new Generator(program.args[0], parseInt(options.length), options.debug, options.file)
 generator.run()
