@@ -37,7 +37,7 @@ export class Generator {
       throw new Error('Top must be greater than 0')
     }
 
-    this.consoleLogger("Read files and build trie");
+    this.consoleLogger("Read files and build Trie");
     start = performance.now();
     await crawler.run(this.path, this.readFileCallback)
     stop = performance.now();
@@ -67,7 +67,7 @@ export class Generator {
       heap.insert(freq)
     }
     stop = performance.now()
-    this.consoleLogger("Building Heap finished", true, stop - start);
+    this.consoleLogger(`Building Heap finished, combinations: ${heap.length}`, true, stop - start);
 
     this.consoleLogger("Retrive results");
     while (this.top > 0 && heap.length > 0) {
@@ -104,7 +104,7 @@ export class Generator {
     process.stderr.write(text)
 
     if(time) {
-      process.stderr.write(` ${time} ms`)
+      process.stderr.write(` | ⌛️: ${time} ms`)
     }
 
     process.stderr.write('\n')
