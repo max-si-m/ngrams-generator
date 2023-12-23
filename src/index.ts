@@ -31,4 +31,7 @@ const generator = new Generator(program.args[0],
   options.file,
 )
 
-generator.run()
+generator.run().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

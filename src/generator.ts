@@ -48,7 +48,7 @@ export class Generator {
     const tmpMap: Map<string, number> = new Map()
     trie.generateCombinations(this.length, tmpMap)
 
-    // TODO: refactore, somewhere in the future, get this working first, later can optimize
+    // TODO: refactor, somewhere in the future, get this working first, later can optimize
     tmpMap.forEach((value: number, key: string) => {
       if (mapHeap.has(value)) {
         const words = mapHeap.get(value)
