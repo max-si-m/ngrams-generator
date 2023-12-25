@@ -11,7 +11,7 @@ test('Trie#addWord', () => {
 })
 
 
-test('Trie#', () => {
+test('Trie#generateCombinations', () => {
   const trie = new Trie()
   trie.addWord('cat')
   trie.addWord('cats')
