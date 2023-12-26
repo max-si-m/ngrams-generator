@@ -22,5 +22,5 @@ test('Trie#generateCombinations', () => {
   const resultMap: Map<string, number> = new Map()
   trie.generateCombinations(2, resultMap)
 
-  expect(Array.from(resultMap.keys())).toEqual(['ca', 'co', 'at', 'ar', 'ts', 're', 'oo', 'ol'])
+  expect(Array.from(resultMap.keys())).toEqual(['ca', 'at', 'ts', 'ar', 're', 'co','oo', 'ol'])
 })

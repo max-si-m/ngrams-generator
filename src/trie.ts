@@ -50,7 +50,6 @@ export default class Trie {
     return node.children.find(n => n.val === letter);
   }
 
-  // TODO: this do not work, no sliding windown, should fix, but lets come back later to this
   generateCombinations(targetLength: number, resultMap: Map<string, number>): void {
     function dfs(node: TrieNode, currentSubstring: TrieNode[]) {
       if (!node) return;
@@ -58,7 +57,7 @@ export default class Trie {
       if (currentSubstring.length === targetLength) {
         const res = buildResultStringWithFreq(currentSubstring);
         const freq = resultMap.get(res.combination) || 0;
-        resultMap.set(res.combination, freq + res.freq); // but this should in revers order Map<freq, string>
+        resultMap.set(res.combination, freq + res.freq);
 
         currentSubstring.splice(0, 1);
       }
@@ -67,16 +66,14 @@ export default class Trie {
         const childNode = node.children[i];
         if (childNode) {
           currentSubstring.push(childNode);
-          dfs(childNode, currentSubstring);
+          dfs(childNode, [...currentSubstring]);
+          currentSubstring.pop(); // Backtrack after the recursive call
         }
-
-        currentSubstring.pop()
       }
     }
 
     dfs(this.root, []);
 
-    // maybe extract to separate function
     function buildResultStringWithFreq(tmpRes: TrieNode[]): CombinationResult {
       const res: string[] = new Array(tmpRes.length)
       let freq: number = 0
