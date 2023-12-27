@@ -158,18 +158,3 @@ export default class Trie {
   }
 }
 
-// const trie = new Trie()
-//
-// trie.addWord('cat')
-// trie.addWord('cats')
-// trie.addWord('car')
-// trie.addWord('crane')
-// trie.addWord('cartoon')
-// trie.addWord('cool')
-//
-// trie.printTree()
-// // lets do this in simple way
-// let resMap: Map<string, number> = new Map()
-// trie.generateCombinations(2, resMap)
-//
-// console.log(resMap)

@@ -98,13 +98,3 @@ export default class MaxHeap {
   }
 }
 
-//// 2,7,26,25,19,17,1,90,3,36
-//const maxHeap = new MaxHeap()
-//const data = [2,7,26,25,19,17,1,90,3,36]
-//
-//for(const n of data) {
-//  maxHeap.insert(n)
-//}
-//maxHeap.drawHeap()
-//maxHeap.delete()
-//maxHeap.drawHeap()
