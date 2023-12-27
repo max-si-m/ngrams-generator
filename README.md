@@ -19,6 +19,18 @@ When I run next command I will receive all ngrams from app/models folder length 
 ngrams-generator app/models --length 3 -t 100 -f ngrams_3.txt # or pipe that into something else
 ~~~
 
+- Debug info is going to STDOUT so it won't interrupt piping
+
+## Installation
+
+I do not publish the package, so have to install package:
+
+~~~bash
+pnpm link-build
+~~~
+
+## Usage
+
 ~~~bash
 Arguments:
   path                   Path to directory of file that should be used for generating ngrams
