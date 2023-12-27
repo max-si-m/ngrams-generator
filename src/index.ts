@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node --esm
+#!/usr/bin/env node
 
 import { Command } from 'commander';
 import { version, description } from '../package.json';
