@@ -32,6 +32,27 @@ pnpm link-build
 ## Usage
 
 ~~~bash
+➜  ngramgenerator  master ngrams-generator -t 10 -l 3 ./README.md
+thi ngr tha the top too gra ram ing typ
+
+➜  ngramgenerator  master ngrams-generator -t 10 -l 4 -d  ./README.md
+[START] Read files and build Trie
+[END] Read files and build trie finished | ⌛️: 3.118833065032959 ms
+---------------------------------------
+
+[START] Generate combinations
+[END] Generate combinations finished | ⌛️: 0.25254106521606445 ms
+---------------------------------------
+
+[START] Building Heap
+[END] Building Heap finished, combinations: 32 | ⌛️: 0.057084083557128906 ms
+---------------------------------------
+
+[START] Retrive results
+ngra that gram rams this tool numb file path typi
+~~~
+
+~~~bash
 Arguments:
   path                   Path to directory of file that should be used for generating ngrams
 
